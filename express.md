@@ -32,3 +32,15 @@ app.get('/monsters', (req, res, next) => {
   res.send(monsters);
 });
 ```
+Express parses any parameters, extracts their actual values, and attaches them as an object to the request object: req.params. This object’s keys are any parameter names in the route, and each key’s value is the actual value of that field per request.They act as wildcards, matching any text at that path segment. For example /monsters/:id will match both/monsters/1 and /monsters/45.
+```js
+const monsters = {
+  hydra: { height: 3, age: 4 },
+  dragon: { height: 200, age: 350 }
+};
+// GET /monsters/hydra
+app.get('/monsters/:name', (req, res, next) => {
+  console.log(req.params); // { name: 'hydra' }
+  res.send(monsters[req.params.name]);
+});
+```
