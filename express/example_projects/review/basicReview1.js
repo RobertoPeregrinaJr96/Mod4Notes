@@ -1,3 +1,10 @@
+/*
+THIS SERVER DOES NOT WORK,
+THIS IS JUST AN EXAMPLE
+*/
+
+
+
 const express = require('express');
 const app = express();
 
