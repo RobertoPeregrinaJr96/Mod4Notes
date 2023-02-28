@@ -34,6 +34,10 @@ node initialization => npm init -y || npm i -y
 npm install nodemon => allows the server to auto update when changes are made
 
 npm install nodemon -D => install in a different dependency list for developers and will not be installed in production
+"script":{
+"start": "nodemon app.js
+"test": "echo \"Error: no test specified/" && exit 1"
+}
 
 ```js
 const express = require("express"); // allows us to use the express library by importing into the JS file
@@ -103,19 +107,33 @@ Initialize an Express application
 * initialize the app variable set to the express keyword invoked
  -->
 
+```js
+const express = require("express");
+const app = express();
+
+app.use(express.json());
+```
+
 Use Express to send simple text and JSON in response to a request from a client
 
 ```js
 app.get("/URL", (req, res, next) => {
-  res.json("simple text");
+  res.send("simple text");
 });
 ```
 
 Create a route handler using express
 
-<!--
+```js
+const express = require("express");
+const router = express.Router();
 
- -->
+router.get("/", (req, res) => {
+  res.json("GET /colors");
+});
+
+module.exports = router;
+```
 
 Predict the order that Express will match requests with route handlers
 
@@ -141,3 +159,25 @@ How do we define a route param in an express end point?
 
 <!--
  -->
+
+# Tuesday Week 10 2/28
+
+middleware
+
+- comes between the request and the response
+- next () => will move from one middleware to the next middleware in the pipeline.
+  - example: if a condition is falsely then move to a new middleware error.
+- res.send() isnt allways required if it has a next() were it will eventualy reach a res.send()
+- 
+
+```js
+app.use((req, res, next) => {
+  console.log("path", req.path); // ( path, obj:key )
+  console.log("url:", req.url); // ( path, obj:key )
+  next(); // connects one piece of middleware to the next middleware applicable
+});
+
+app.get("path", (req, res, next) => {
+  console.log("the next middleware!");
+});
+```
