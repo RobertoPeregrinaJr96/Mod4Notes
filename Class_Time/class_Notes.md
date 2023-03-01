@@ -168,7 +168,7 @@ middleware
 - next () => will move from one middleware to the next middleware in the pipeline.
   - example: if a condition is falsely then move to a new middleware error.
 - res.send() isnt allways required if it has a next() were it will eventualy reach a res.send()
-- 
+-
 
 ```js
 app.use((req, res, next) => {
@@ -181,3 +181,7 @@ app.get("path", (req, res, next) => {
   console.log("the next middleware!");
 });
 ```
+
+# Wednesday
+
+database are super important to store and access data

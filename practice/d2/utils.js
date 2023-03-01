@@ -7,23 +7,30 @@ const breakfastCheckName = (req, res, next) => {
     if (req.body.name) {
         return next()
     }
-    res.status(401)
-    res.send("Please provide a name for this breakfast")
+    req.errors.name = 'Please provide a name for this breakfast'
+    next()
 }
 
 const breakfastCheckCooked = (req, res, next) => {
-    console.log(req.body.cooked)
     if (req.body.cooked === true || req.body.cooked === false) {
-        next()
+        return next()
     }
-    req.errors.cooked = "please provide a valid cooked value {true || false"
+    req.errors.cooked = 'Please provide a valid cooked value (true or false)'
+    next()
 }
+
 const checkErrors = (req, res, next) => {
-    if (req.errors) {
-        console.log("errors")
+    if (Object.keys(req.errors).length) {
+        console.log('test?')
+        res.status(401)
+        return res.json({
+            title: "There were some errors",
+            errors: req.errors
+        })
     }
+    next()
 }
 
 const errorHandlers = [errCollection, breakfastCheckName, breakfastCheckCooked, checkErrors]
 
-module.exports = errorHandlers
+module.exports = {errorHandlers}

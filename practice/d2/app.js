@@ -1,68 +1,48 @@
 const express = require('express')
-const { get } = require('http')
-const errorHandlers = require("./utils")
-const breakfastRouter = require("./routes/breakfast")
 const app = express()
-const port = 5000
-
-app.use(express.json())
-
-let data = [
-    {
-        calories: 42,
-        flavor: "chicken",
-        cooked: true,
-        prepTime: 10,
-        category: "poultry",
-        name: "eggs"
-    }
-]
+require('dotenv').config()
 
 
-app.use('/breakfast', (req, res, next) => {
-    console.log("path ", req.path)
-    console.log("method ", req.method)
-    next("banana")
-})
-app.use((err, req, res, next) => {
-    console.log(err)
+const breakfastRouter = require('./routes/breakfast')
+
+app.use((req, res, next) => {
+    console.log('path: ', req.path)
+    console.log('method: ', req.method)
+    // next('banana')
     next()
 })
-app.use("/another-resource", (req, res, next) => {
-    console.log(req)
-})
 
-app.get('/breakfast', (req, res, next) => {
-    res.json(data)
-    // res.send("fetch all the resources")
-})
+console.log(process.env.MESSAGE)
 
-app.post('/breakfast', errorHandlers, (req, res, next) => {
-    console.log(req.body)
-    res.json({ success: true })
-})
-
-app.get("/another-resource", (req, res, next) => {
-    console.log("nothing here")
-})
-// error for when we don't have a endpoint for
-app.use((req, res, next) => {
-    const err = new Error("The resource you were looking for could not be found")
-    err.statusCode = 404;
-    res.json({
-        status: err.statusCode,
-        message: err.message
-    })
-})
-// error for when we have a endpoint
 app.use((err, req, res, next) => {
-    const statusCode = err.statusCode
+    console.log(err)
+    next('orange')
+})
+
+app.use(express.json())
+app.use('/static', express.static('assets/css'))
+
+
+app.use('/breakfast', breakfastRouter)
+
+app.get('/another-resource', (req, res) => {
+    res.send('Fetch all of another resource')
+})
+
+app.use((req, res, next) => {
+    const err = new Error('The resource you were looking for could not be found')
+    err.statusCode = 404
+    next(err)
+})
+
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500
     res.status(statusCode)
-    const message = "Something went wrong"
     res.json({
-        status: err.statusCode || statusCode,
-        message: err.message || message
+        status: statusCode,
+        message: err.message || 'Something Went Wrong'
     })
 })
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:3000`))
+
+app.listen(process.env.PORT, () => console.log(`Listning on port ${process.env.PORT}...`))
