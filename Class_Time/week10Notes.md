@@ -42,3 +42,13 @@ Many-to-many
 - Mutliple tables connected together
 - connected by a JOIN table
   ![Alt text](https://appacademy-open-assets.s3-us-west-1.amazonaws.com/Module-SQL/assets/orders-erd-many-to-many.svg)
+
+- connected with a FOREIGN KEY
+
+```sql
+column	type	constraints
+id	INTEGER	PRIMARY KEY
+juice	TEXT
+date	TEXT
+student_id	INTEGER	FOREIGN KEY REFERENCES students(id)
+```
