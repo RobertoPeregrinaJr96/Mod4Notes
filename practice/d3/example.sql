@@ -24,3 +24,21 @@ SELECT *
 FROM animals
 
 SELECT name, is_cute FROM animals;
+
+
+SELECT * FROM animals
+WHERE name = 'Red panda';
+
+SELECT * FROM animals
+WHERE avg_weight <= 10 OR is_cute = true;
+
+DELETE FROM animals
+WHERE avg_weight < 10;
+
+
+UPDATE animals
+SET is_cute = true
+where id = 10;
+
+UPDATE animals
+set avg_weight = avg_weight + 10
